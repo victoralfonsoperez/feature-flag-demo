@@ -14,17 +14,23 @@ A standalone React app demonstrating the [feature-flag-system](https://github.co
 - **Beta Banner** — warning banner shown only when the flag is enabled
 - Flags are fetched from the API during `vite build` and baked into the bundle
 
+## Live Demo
+
+https://kanary-demo.netlify.app/
+
 ## Setup
 
 ### Prerequisites
 - Node.js 18+
-- A GitHub personal access token with `read:packages` scope (for the SDK)
+- A GitHub personal access token (classic) with `read:packages` scope (for installing the SDK from GitHub Packages)
 
 ### Install
 
+The SDK is published to GitHub Packages. The `.npmrc` in this repo is already configured to reference a `GH_PACKAGES_TOKEN` environment variable:
+
 ```bash
-# Authenticate to GitHub Packages (one-time)
-echo "//npm.pkg.github.com/:_authToken=YOUR_TOKEN" >> ~/.npmrc
+# Set your GitHub PAT (read:packages scope)
+export GH_PACKAGES_TOKEN=ghp_your_token_here
 
 # Install dependencies
 npm install
@@ -53,6 +59,25 @@ VITE_API_URL=https://your-api.example.com npm run build
 # Preview the production build
 npm run preview
 ```
+
+## Deployment (Netlify)
+
+When deploying to Netlify (or any hosting provider), set the following environment variables under **Site settings > Environment variables**:
+
+| Variable | Required | Description |
+|---|---|---|
+| `GH_PACKAGES_TOKEN` | Yes | GitHub PAT (classic) with `read:packages` scope. Required to install the SDK from GitHub Packages during the build. |
+| `VITE_API_URL` | Yes | Base URL of the Flag Service API (e.g., `https://kanary-api.onrender.com`). **Do not include `/api`** — the SDK appends it automatically. If missing, the app defaults to `http://localhost:3100` and flags will silently fall back to defaults. |
+| `VITE_SDK_API_KEY` | Yes | API token created in the [Kanary dashboard](https://kanary-feature-flags.netlify.app/) for authenticating with the resolve endpoint. Create an app-scoped token for isolation. |
+
+> **Important:** All `VITE_*` variables are baked into the bundle at build time. After adding or changing them, you must trigger a new deploy for the changes to take effect.
+
+### Netlify build settings
+
+| Setting | Value |
+|---|---|
+| **Build command** | `npm run build` |
+| **Publish directory** | `dist` |
 
 ## Flags used
 
