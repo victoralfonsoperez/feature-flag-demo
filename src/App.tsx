@@ -35,11 +35,13 @@ function AppContent() {
 export default function App() {
   const apiUrl =
     import.meta.env.VITE_API_URL || "http://localhost:3100";
+  const apiKey = import.meta.env.VITE_SDK_API_KEY as string | undefined;
 
   return (
     <FlagProvider
       serviceUrl={apiUrl}
       environment="development"
+      apiKey={apiKey}
       defaults={{ theme: "default", new_dashboard: "false" }}
     >
       <AppContent />
