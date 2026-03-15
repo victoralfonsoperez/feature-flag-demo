@@ -1,14 +1,18 @@
-import { FlagProvider } from "@victoralfonsoperez/feature-flags-sdk";
+import { FlagProvider, useFlag } from "@victoralfonsoperez/feature-flags-sdk";
 import { RuntimeDemo } from "./components/RuntimeDemo";
 import { BuildTimeDemo } from "./components/BuildTimeDemo";
+import { getTheme } from "./theme";
 
 function AppContent() {
+  const themeValue = useFlag("theme", "dark") ?? "dark";
+  const theme = getTheme(themeValue);
+
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="border-b border-gray-800 px-6 py-4">
+    <div className={`min-h-screen ${theme.pageBg} ${theme.pageText}`}>
+      <header className={`border-b ${theme.headerBorder} px-6 py-4`}>
         <div className="mx-auto max-w-5xl flex items-center gap-3">
           <svg
-            className="w-7 h-7 text-yellow-500"
+            className={`w-7 h-7 ${theme.headerIcon}`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -17,16 +21,16 @@ function AppContent() {
             <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
             <line x1="4" y1="22" x2="4" y2="15" />
           </svg>
-          <h1 className="text-xl font-bold text-white">Feature Flag Demo</h1>
-          <span className="ml-auto text-xs text-gray-500">
+          <h1 className={`text-xl font-bold ${theme.title}`}>Feature Flag Demo</h1>
+          <span className={`ml-auto text-xs ${theme.subtitle}`}>
             Powered by @victoralfonsoperez/feature-flags-sdk
           </span>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-6 py-8 space-y-8">
-        <RuntimeDemo />
-        <BuildTimeDemo />
+        <RuntimeDemo theme={theme} />
+        <BuildTimeDemo theme={theme} />
       </main>
     </div>
   );
@@ -42,7 +46,7 @@ export default function App() {
       serviceUrl={apiUrl}
       environment="development"
       apiKey={apiKey}
-      defaults={{ theme: "default", new_dashboard: "false" }}
+      defaults={{ theme: "dark", new_dashboard: "false" }}
     >
       <AppContent />
     </FlagProvider>
