@@ -22,16 +22,20 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .node-version
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
 
       - name: Authenticate to GitHub Packages
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_TOKEN }}" >> .npmrc
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL || 'https://feature-flag-system.onrender.com' }}
           VITE_SDK_API_KEY: ${{ secrets.VITE_SDK_API_KEY }}
