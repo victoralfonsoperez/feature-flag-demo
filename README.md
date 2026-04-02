@@ -21,7 +21,8 @@ https://kanary-demo.netlify.app/
 ## Setup
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 20+ (use [fnm](https://github.com/Schniz/fnm) — run `fnm use` in the project root)
+- pnpm 10+ (`corepack enable pnpm`)
 - A GitHub personal access token (classic) with `read:packages` scope (for installing the SDK from GitHub Packages)
 
 ### Install
@@ -33,13 +34,13 @@ The SDK is published to GitHub Packages. The `.npmrc` in this repo is already co
 export GH_PACKAGES_TOKEN=ghp_your_token_here
 
 # Install dependencies
-npm install
+pnpm install
 ```
 
 ### Run (development)
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 The app works without the feature-flag API running — it uses sensible defaults.
@@ -47,17 +48,17 @@ The app works without the feature-flag API running — it uses sensible defaults
 To connect to a live API:
 
 ```bash
-VITE_API_URL=http://localhost:3100 npm run dev
+VITE_API_URL=http://localhost:3100 pnpm dev
 ```
 
 ### Build (production)
 
 ```bash
 # Build-time flags are fetched from the API during build
-VITE_API_URL=https://your-api.example.com npm run build
+VITE_API_URL=https://your-api.example.com pnpm build
 
 # Preview the production build
-npm run preview
+pnpm preview
 ```
 
 ## Deployment (Netlify)
@@ -76,7 +77,7 @@ When deploying to Netlify (or any hosting provider), set the following environme
 
 | Setting | Value |
 |---|---|
-| **Build command** | `npm run build` |
+| **Build command** | `pnpm build` |
 | **Publish directory** | `dist` |
 
 ## Flags used
